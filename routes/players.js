@@ -1,6 +1,6 @@
-const router = require('express').Router();
-const playerController = require('../controllers/playerController');
+const Router = require("express").Router();
+const playerController = require("../controllers/playerController");
 
-router.post('/create/players', playerController);
+Router.post("/create/players", playerController);
 
-module.exports = router;
+module.exports = Router;

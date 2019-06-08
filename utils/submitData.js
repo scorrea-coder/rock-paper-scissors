@@ -1,5 +1,5 @@
-const submitData = async (model, data) => {
-	const createdData = new model(data);
+const submitData = async (Model, data) => {
+	const createdData = new Model(data);
 	await createdData.save();
 };
 

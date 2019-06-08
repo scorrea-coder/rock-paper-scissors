@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 class Validator {
 	static isNotEmpty(data) {
-		return data === undefined ? false: true;
+		return data === "undefined" ? false : true;
 	}
 }
 

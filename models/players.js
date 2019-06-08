@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
-const schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const playerSchema = new schema({
-	player_1: {
+const playerSchema = new Schema({
+	playerOne: {
 		type: String,
 		required: true
 	},
-	player_2: {
+	playerTwo: {
 		type: String,
 		required: true
 	}
 });
 
-module.exports = mongoose.model('players', playerSchema);
+module.exports = mongoose.model("players", playerSchema);
