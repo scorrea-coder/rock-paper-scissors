@@ -8,7 +8,6 @@ const connectToDb = async () => {
     await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
   } catch (error) {
     mongoose.disconnect();
-    process.exit(1);
   }
 };
 

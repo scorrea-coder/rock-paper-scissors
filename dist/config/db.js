@@ -17,8 +17,6 @@ const connectToDb = async () => {
     });
   } catch (error) {
     _mongoose.default.disconnect();
-
-    process.exit(1);
   }
 };
 

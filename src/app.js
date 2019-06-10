@@ -8,6 +8,6 @@ connectToDb();
 
 app.use(cors());
 app.use(json({ extended: false }));
-app.use('/api', require('./routes/players').default);
+
 
 export default app;

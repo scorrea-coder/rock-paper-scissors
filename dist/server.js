@@ -6,4 +6,6 @@ var _app = _interopRequireDefault(require("./app"));
 
 const port = process.env.PORT || 5000;
 
-_app.default.listen(port);
+_app.default.listen(port, () => {
+  console.log('Listening to port', port);
+});

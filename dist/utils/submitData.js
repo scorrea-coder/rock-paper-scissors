@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getDataByID = exports.getData = exports.submitData = void 0;
 
-var _validator = require("./validator");
-
 const submitData = async (Model, data) => {
   try {
     const createdData = new Model(data);
