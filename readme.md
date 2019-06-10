@@ -6,11 +6,12 @@ You can download git by going to the their [homepage](https://git-scm.com/downlo
 
 Once both are installed on your pc, you can go ahead and download the repository by clicking on **Clone or download**
 
-Here you have two options
+Here are the instructions to get started:
 
  - [ ] Download Folder or Clone Repo
  - [ ] npm install
  - [ ] npm run dev
+ - [ ] play
 
 That's all it takes to get playing.
 
