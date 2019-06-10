@@ -4,9 +4,10 @@
 	"description": "Rock , Paper , Scissors Back End",
 	"main": "src/server.js",
 	"scripts": {
-		"start": "nodemon --exec babel-node src/server.js",
+		"start": "node dist/server.js",
 		"build": "babel src --out-dir dist",
-		"serve": "concurrently \"npm run serve\" \"npm start --prefix client\""
+		"serve": "nodemon --exec babel-node src/server.js",
+		"dev": "concurrently \"npm run serve\" \"npm start --prefix client\""
 	},
 	"keywords": [
 		"Rock",
