@@ -18,7 +18,7 @@ const Game = () => {
 
   useEffect(() => {
     const getPlayer = async () => {
-      const resp = await fetch(`http://localhost:5000/api/get/player/${player.id}`);
+      const resp = await fetch(`https://rock-paper-scissors-app-io.herokuapp.com/api/get/player/${player.id}`);
       const players = await resp.json();
       setPlayer({
         playerOne: players.playerOne,

@@ -36,7 +36,7 @@ const GameStart = ({ getPlayerId, history }) => {
           message: '',
         });
 
-        const res = await fetch('http://localhost:5000/api/create/players/', {
+        const res = await fetch('https://rock-paper-scissors-app-io.herokuapp.com/api/create/players/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
