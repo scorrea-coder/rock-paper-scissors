@@ -22,5 +22,6 @@ app.use((0, _express.json)({
   extended: false
 }));
 app.use('/api', require('./routes/players').default);
+app.use('/api', require('./routes/match').default);
 var _default = app;
 exports.default = _default;
