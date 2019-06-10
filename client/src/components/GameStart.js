@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import GameAlert from './GameAlert';

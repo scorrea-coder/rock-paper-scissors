@@ -7,6 +7,7 @@ import '../styles/game.css';
 
 const Game = () => {
   const [player, setPlayer] = useState({ id: '', playerOne: '', playerTwo: '' });
+  const [winner, setWinner] = useState({ id: '', winner: '' });
 
   const getPlayerId = (fetchedId) => {
     if (fetchedId) {
@@ -17,11 +18,15 @@ const Game = () => {
     }
   };
 
+  const getWinnerId = (fetchedId) => {
+    if (fetchedId) {
+      setWinner({ ...winner, id: fetchedId });
+    }
+  };
+
   useEffect(() => {
     const getPlayer = async () => {
-      const resp = await fetch(
-        `https://rock-paper-scissors-app-io.herokuapp.com/api/get/player/${player.id}`,
-      );
+      const resp = await fetch(`https://rock-paper-scissors-app-io.herokuapp.com/api/get/player/${player.id}`);
       const players = await resp.json();
       setPlayer({
         playerOne: players.playerOne,
@@ -40,8 +45,16 @@ const Game = () => {
         exact
         component={props => <GameStart {...props} getPlayerId={getPlayerId} />}
       />
-      <Route path="/start" exact component={props => <GameRounds {...props} player={player} />} />
-      <Route path="/winner" exact component={props => <GameWin {...props} />} />
+      <Route
+        path="/start"
+        exact
+        component={props => <GameRounds {...props} player={player} getWinnerId={getWinnerId} />}
+      />
+      <Route
+        path="/winner"
+        exact
+        component={props => <GameWin {...props} matchWinner={winner} />}
+      />
     </Router>
   );
 };

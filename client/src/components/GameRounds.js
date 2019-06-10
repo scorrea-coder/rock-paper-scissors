@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import GameAlert from './GameAlert';
 
-const GameRounds = ({ player }) => {
+const GameRounds = ({ player, getWinnerId, history }) => {
   const [players, setPlayers] = useState({
     playerOne: {
       name: player.playerOne || 'Player One',
@@ -20,7 +20,7 @@ const GameRounds = ({ player }) => {
   const [nextPlayer, setNextPlayer] = useState(true);
   const [value, setValue] = useState('');
   const [roundsWon, setRoundsWon] = useState([]);
-  const [gameWinner, setGameWinner] = useState('');
+  const [gameWinner, setGameWinner] = useState({ id: '', winner: '' });
   const [errors, setMessage] = useState({
     error: false,
     class: '',
@@ -137,21 +137,28 @@ const GameRounds = ({ player }) => {
     }
   };
 
-  const winGame = () => {
+  const winGame = async () => {
     if (playerOne.score === 3) {
-      setGameWinner(playerOne.name);
+      setGameWinner({ ...gameWinner, winner: playerOne.name });
     } else if (playerTwo.score === 3) {
-      setGameWinner(playerTwo.name);
+      setGameWinner({ ...gameWinner, winner: playerTwo.name });
     }
 
-    if (gameWinner) {
-      fetch('https://rock-paper-scissors-app-io.herokuapp.com/api/create/match/winner', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    if (playerTwo.score === 3 || playerOne.score === 3) {
+      const resp = await fetch(
+        'https://rock-paper-scissors-app-io.herokuapp.com/api/create/match/winner',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ winner: gameWinner.winner }),
         },
-        body: JSON.stringify({ winner: gameWinner }),
-      });
+      );
+
+      const matchData = await resp.json();
+      getWinnerId(matchData._id);
+      history.push('/start');
     }
   };
 
@@ -208,6 +215,7 @@ const GameRounds = ({ player }) => {
 
 GameRounds.propTypes = {
   player: PropTypes.object.isRequired,
+  getWinnerId: PropTypes.func.isRequired,
 };
 
 export default GameRounds;
