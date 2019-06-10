@@ -14,9 +14,9 @@ const submitData = async (Model, data) => {
       return createdData;
     }
 
-    return 'Who will be playing';
+    return 'Something is missing';
   } catch (error) {
-    return 'You cannot play rock paper scissors alone, grab your buddy';
+    return error.message;
   }
 };
 
