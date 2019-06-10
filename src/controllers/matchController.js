@@ -3,7 +3,7 @@ import { submitData, getDataByID } from '../utils/submitData';
 
 const createMatchWinner = async (req, res) => {
   const { winner } = req.body;
-  const resp = await submitData(Match, winner);
+  const resp = await submitData(Match, { winner });
   return res.status(200).json(resp);
 };
 
