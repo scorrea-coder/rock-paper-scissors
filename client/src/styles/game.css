@@ -12,19 +12,19 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-    width: 100%;
-    height: 350px;
-    max-height: 100%;
-    margin: 300px auto 0 auto;
+	width: 100%;
+	height: 350px;
+	max-height: 100%;
+	margin: 300px auto 0 auto;
 }
 
 .background {
-    position: absolute;
-    top: 0;
-    background: url('../img/rock__paper_scissors.jpg') no-repeat;
-    background-size: cover;
-    background-position: center;
-    width: 100%;
+	position: absolute;
+	top: 0;
+	background: url('../img/rock__paper_scissors.jpg') no-repeat;
+	background-size: cover;
+	background-position: center;
+	width: 100%;
 	height: 300px;
 	z-index: -1;
 }
@@ -82,9 +82,9 @@ body {
 }
 
 .gameStart__form-submit {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	margin: 10px 0 0 0;
 	outline: none;
 	height: 30px;
@@ -102,6 +102,34 @@ body {
 }
 
 .link__item {
-    text-decoration: none;
-    color: #000;
+	text-decoration: none;
+	color: #000;
+}
+
+.match {
+	display: grid;
+	grid-auto-flow: column;
+	align-content: center;
+	margin: 0 auto;
+	text-align: center;
+	height: 100vh;
+}
+
+.leaderboard {
+	display: flex;
+	justify-content: center;
+}
+
+.leaderboard__inner {
+	display: flex;
+	flex-direction: column;
+}
+
+.rounds__count ul {
+	padding:0;
+}
+
+.rounds__count ul li,
+.round__winner ul li {
+	list-style: none;
 }

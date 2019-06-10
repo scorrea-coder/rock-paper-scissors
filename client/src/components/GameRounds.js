@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import GameAlert from './GameAlert';
 
 const GameRounds = ({ player }) => {
@@ -6,12 +7,12 @@ const GameRounds = ({ player }) => {
     playerOne: {
       name: player.playerOne || 'Player One',
       score: 0,
-      selected: 'move',
+      selected: '',
     },
     playerTwo: {
       name: player.playerTwo || 'Player Two',
       score: 0,
-      selected: 'move',
+      selected: '',
     },
   });
 
@@ -19,6 +20,7 @@ const GameRounds = ({ player }) => {
   const [nextPlayer, setNextPlayer] = useState(true);
   const [value, setValue] = useState('');
   const [roundsWon, setRoundsWon] = useState([]);
+  const [gameWinner, setGameWinner] = useState('');
   const [errors, setMessage] = useState({
     error: false,
     class: '',
@@ -27,6 +29,13 @@ const GameRounds = ({ player }) => {
 
   const { playerOne, playerTwo } = players;
 
+  const reset = () => {
+    if (playerOne.selected !== '' && playerTwo.selected !== '') {
+      playerOne.selected = '';
+      playerTwo.selected = '';
+    }
+  };
+
   const rounds = () => {
     setRound(nextPlayer ? round : round + 1);
     setNextPlayer(!nextPlayer);
@@ -34,6 +43,8 @@ const GameRounds = ({ player }) => {
 
   const handleChange = (event) => {
     const users = { ...players };
+    setValue(event.target.value);
+
     nextPlayer
       ? (users.playerOne.selected = event.target.value)
       : (users.playerTwo.selected = event.target.value);
@@ -42,26 +53,22 @@ const GameRounds = ({ player }) => {
       ...users,
     });
 
-    setValue(event.target.value);
+    setMessage({
+      errors: false,
+      class: '',
+      message: '',
+    });
   };
 
   const handleFocus = () => {
     setValue('');
   };
 
-  const reset = () => {
-    if (playerOne.selected !== '' && playerTwo.selected !== '') {
-      playerOne.selected = '';
-      playerTwo.selected = '';
-    }
-  };
-
   const setWinner = (winner) => {
     setRoundsWon(state => state.concat({ rounds: round - 1, winner }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const choiceHandler = () => {
     const users = { ...players };
     if (playerOne.selected === 'rock' && playerTwo.selected === 'paper') {
       users.playerTwo.score += 1;
@@ -127,50 +134,80 @@ const GameRounds = ({ player }) => {
         class: 'danger',
         message: 'Its a tie',
       });
-    } else if (playerTwo.selected === '' && playerOne.selected === '') {
-      setMessage({
-        error: true,
-        class: 'danger',
-        message: 'Select a valid option',
-      });
-
-      setRound(1);
-
-      setNextPlayer(!nextPlayer);
     }
+  };
+
+  const winGame = () => {
+    if (playerOne.score === 3) {
+      setGameWinner(playerOne.name);
+    } else if (playerTwo.score === 3) {
+      setGameWinner(playerTwo.name);
+    }
+
+    if (gameWinner) {
+      fetch('https://rock-paper-scissors-app-io.herokuapp.com/api/create/match/winner', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ winner: gameWinner }),
+      });
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    choiceHandler();
+    winGame();
     reset();
   };
 
   return (
-    <main className="round">
+    <div>
       <GameAlert className={errors.class} message={errors.message} />
-      <h1>{`Round ${round}`}</h1>
-      <h2>{nextPlayer ? players.playerOne.name : players.playerTwo.name}</h2>
-      <form onSubmit={event => handleSubmit(event)}>
-        <select onChange={event => handleChange(event)} onBlur={() => handleFocus()} value={value}>
-          <option>Move</option>
-          <option value="rock">Rock</option>
-          <option value="paper">Paper</option>
-          <option value="scissors">Scissors</option>
-        </select>
-        <button onClick={() => rounds()} type="submit">
-					[OK]
-        </button>
-      </form>
-      <aside>
-        <h1>Score</h1>
-        <div>
-          {roundsWon.map(data => (
-            <div key={data.rounds + 2}>
-              {`Round ${data.rounds}`}
-              {data.winner}
+      <main className="match">
+        <section>
+          <h1>{`Round ${round}`}</h1>
+          <h2>{nextPlayer ? players.playerOne.name : players.playerTwo.name}</h2>
+          <form onSubmit={event => handleSubmit(event)}>
+            <select
+              onChange={event => handleChange(event)}
+              onBlur={() => handleFocus()}
+              value={value}
+            >
+              <option value="">Move</option>
+              <option value="rock">Rock</option>
+              <option value="paper">Paper</option>
+              <option value="scissors">Scissors</option>
+            </select>
+            <button onClick={() => rounds()} type="submit">
+							[OK]
+            </button>
+          </form>
+        </section>
+        <aside>
+          <h1>Score</h1>
+          <div className="leaderboard">
+            <div className="leaderboard__inner">
+              <h3>Winner</h3>
+              <div className="rounds__count">
+                {roundsWon.map(data => (
+                  <ul key={data.rounds + 2}>
+                    <li>{`Round ${data.rounds}`}</li>
+                    <li>{data.winner}</li>
+                  </ul>
+                ))}
+              </div>
             </div>
-          ))}
-          <div />
-        </div>
-      </aside>
-    </main>
+          </div>
+        </aside>
+      </main>
+    </div>
   );
+};
+
+GameRounds.propTypes = {
+  player: PropTypes.object.isRequired,
 };
 
 export default GameRounds;

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import GameAlert from './GameAlert';
 
 const GameStart = ({ getPlayerId, history }) => {
@@ -36,13 +37,16 @@ const GameStart = ({ getPlayerId, history }) => {
           message: '',
         });
 
-        const res = await fetch('https://rock-paper-scissors-app-io.herokuapp.com/api/create/players/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const res = await fetch(
+          'https://rock-paper-scissors-app-io.herokuapp.com/api/create/players/',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ playerOne, playerTwo }),
           },
-          body: JSON.stringify({ playerOne, playerTwo }),
-        });
+        );
 
         const playerData = await res.json();
 
@@ -62,43 +66,50 @@ const GameStart = ({ getPlayerId, history }) => {
   };
 
   return (
-    <main>
+    <Fragment>
       <GameAlert message={errors.message} className={errors.class} />
-      <div className="background" />
-      <section className="gameStart">
-        <h1>
-          {"Enter Player's name"}
-          {' '}
-        </h1>
+      <main>
+        <div className="background" />
+        <section className="gameStart">
+          <h1>
+            {"Enter Player's name"}
+            {' '}
+          </h1>
 
-        <form className="gameStart__form" onSubmit={event => onSubmit(event)} noValidate>
-          <label htmlFor="playerOne">
-						Player 1
-            <input
-              name="playerOne"
-              type="text"
-              id="playerOne"
-              required
-              onChange={event => onChange(event)}
-            />
-          </label>
-          <label htmlFor="playerTwo">
-						Player 2
-            <input
-              name="playerTwo"
-              type="text"
-              id="playerTwo"
-              required
-              onChange={event => onChange(event)}
-            />
-          </label>
-          <button className="gameStart__form-submit" type="submit">
-						Start
-          </button>
-        </form>
-      </section>
-    </main>
+          <form className="gameStart__form" onSubmit={event => onSubmit(event)} noValidate>
+            <label htmlFor="playerOne">
+							Player 1
+              <input
+                name="playerOne"
+                type="text"
+                id="playerOne"
+                required
+                onChange={event => onChange(event)}
+              />
+            </label>
+            <label htmlFor="playerTwo">
+							Player 2
+              <input
+                name="playerTwo"
+                type="text"
+                id="playerTwo"
+                required
+                onChange={event => onChange(event)}
+              />
+            </label>
+            <button className="gameStart__form-submit" type="submit">
+							Start
+            </button>
+          </form>
+        </section>
+      </main>
+    </Fragment>
   );
+};
+
+GameStart.propTypes = {
+  getPlayerId: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default GameStart;
