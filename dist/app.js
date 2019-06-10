@@ -21,5 +21,6 @@ app.use((0, _cors.default)());
 app.use((0, _express.json)({
   extended: false
 }));
+app.use('/api', require('./routes/players').default);
 var _default = app;
 exports.default = _default;
